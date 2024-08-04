@@ -1,3 +1,4 @@
+import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -6,13 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { SigninForm } from "./_components/signin-form";
 import Link from "next/link";
-
-import type { Metadata } from "next";
-import { Logo } from "@/components/logo";
-
-export const metadata: Metadata = { title: "Sign In" };
+import { ForgotPasswordForm } from "./_components/forgot-password-form";
 
 export default function Page() {
   return (
@@ -21,29 +17,22 @@ export default function Page() {
         <div className="flex flex-col">
           <Logo className="rounded-b-none" />
 
-          <Card className="w-[400px] rounded-tl-none border-none sm:border">
+          <Card className="w-[400px] rounded-tl-none border-0 sm:border">
             <CardHeader>
-              <CardTitle>Sign In</CardTitle>
+              <CardTitle>Forgot Password?</CardTitle>
             </CardHeader>
 
             <CardContent>
-              <SigninForm />
+              <ForgotPasswordForm />
             </CardContent>
 
             <CardFooter className="flex-col items-start">
               <p className="text-muted-foreground text-sm">
-                Don&apos;t have an account? Click{" "}
+                Remember your password? Click{" "}
                 <Button variant="link" size="sm" className="px-0" asChild>
-                  <Link href="/auth/signup">here</Link>
+                  <Link href="/auth/signin">here</Link>
                 </Button>{" "}
-                to sign up.
-              </p>
-
-              <p className="text-muted-foreground text-sm">
-                Forgot your password? Click{" "}
-                <Button variant="link" size="sm" className="px-0" asChild>
-                  <Link href="/auth/forgot-password">here</Link>
-                </Button>
+                to sign in.
               </p>
             </CardFooter>
           </Card>

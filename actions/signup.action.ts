@@ -7,8 +7,6 @@ import { SignupSchema } from "@/validators/signup.validator";
 import type { SignupOutput } from "@/validators/signup.validator";
 import argon2 from "argon2";
 import { AuthError } from "next-auth";
-import { revalidatePath } from "next/cache";
-import { isRedirectError } from "next/dist/client/components/redirect";
 import * as v from "valibot";
 
 type Res =

@@ -23,7 +23,7 @@ export default async function Page() {
         <div className="flex flex-col">
           <Logo className="rounded-b-none" />
 
-          <Card className="w-[400px] rounded-tl-none">
+          <Card className="w-[400px] rounded-tl-none border-0 sm:border">
             <CardHeader>
               <CardTitle>Sign Up</CardTitle>
             </CardHeader>
