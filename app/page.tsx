@@ -9,7 +9,7 @@ export default async function Page() {
     <main>
       <div className="container max-w-xl py-24">
         <h1 className="text-3xl font-bold tracking-tight text-center">
-          Expense Tracker
+          Expense Gumshoe
         </h1>
 
         <div className="flex justify-between items-center mt-10">
