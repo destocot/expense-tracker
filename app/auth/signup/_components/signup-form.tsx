@@ -24,10 +24,13 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import type { SecurityQuestion } from "@prisma/client";
 import { signupAction } from "@/actions/signup.action";
 import { PasswordInput } from "@/components/password-input";
+import { useRouter } from "next/navigation";
 
 type SignupFormProps = { securityQuestions: Array<SecurityQuestion> };
 
 export const SignupForm = ({ securityQuestions }: SignupFormProps) => {
+  const router = useRouter();
+
   const form = useForm<SignupInput>({
     resolver: valibotResolver(SignupSchema),
   });
@@ -37,25 +40,24 @@ export const SignupForm = ({ securityQuestions }: SignupFormProps) => {
   const submit = async (values: SignupInput) => {
     const res = await signupAction(values);
 
-    if (res.success) {
-      alert("Account created successfully!");
-    } else {
-      switch (res.status) {
-        case 400:
-          const nestedErrors = res.error.nested;
+    switch (res.status) {
+      case 200:
+        router.replace("/");
+        break;
+      case 400:
+        const nestedErrors = res.error.nested;
 
-          for (const _field in nestedErrors) {
-            const field = _field as keyof SignupInput;
-            const message = nestedErrors[field]?.[0];
-            setError(field, { message });
-          }
-          break;
-        case 409:
-        case 500:
-        default:
-          const error = res.error || "Internal Server Error";
-          setError("securityAnswer", { message: error });
-      }
+        for (const _field in nestedErrors) {
+          const field = _field as keyof SignupInput;
+          const message = nestedErrors[field]?.[0];
+          setError(field, { message });
+        }
+        break;
+      case 409:
+      case 500:
+      default:
+        const error = res.error || "Internal Server Error";
+        setError("securityAnswer", { message: error });
     }
   };
 

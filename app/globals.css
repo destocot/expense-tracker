@@ -29,6 +29,8 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
     --radius: 0.75rem;
+    --success: 120 39% 49%;
+    --success-foreground: 120 30% 93%;
   }
 }
 

@@ -9,18 +9,17 @@ datasource db {
 
 model User {
   userId    String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   username String @unique
   password String
 
   security_question  SecurityQuestion @relation(fields: [securityQuestionId], references: [questionId])
-  securityQuestionId String           @map("security_question_id") @db.ObjectId
+  securityQuestionId String           @db.ObjectId
 
-  securityAnswer String @map("security_answer")
-
-  @@map("users")
+  securityAnswer String
+  Expense        Expense[]
 }
 
 model SecurityQuestion {
@@ -28,6 +27,22 @@ model SecurityQuestion {
 
   question String
   User     User[]
+}
 
-  @@map("security_questions")
+enum Type {
+  INCOME
+  EXPENSE
+}
+
+model Expense {
+  expenseId String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  amount      Float
+  type        Type
+  description String
+
+  User   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userId String @db.ObjectId
 }

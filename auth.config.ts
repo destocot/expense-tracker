@@ -27,7 +27,7 @@ export const authConfig = {
       return token;
     },
     session({ session, token }) {
-      session.user.id = token.userId;
+      session.user.userId = token.userId;
       session.user.username = token.username;
 
       return session;

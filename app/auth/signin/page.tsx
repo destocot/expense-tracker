@@ -9,36 +9,45 @@ import {
 import { SigninForm } from "./_components/signin-form";
 import Link from "next/link";
 
+import type { Metadata } from "next";
+import { Logo } from "@/components/logo";
+
+export const metadata: Metadata = { title: "Sign In" };
+
 export default function Page() {
   return (
     <main className="flex h-screen">
       <div className="flex-1 flex items-center justify-center">
-        <Card className="w-[400px]">
-          <CardHeader>
-            <CardTitle>Sign In</CardTitle>
-          </CardHeader>
+        <div className="flex flex-col">
+          <Logo className="rounded-b-none" />
 
-          <CardContent>
-            <SigninForm />
-          </CardContent>
+          <Card className="w-[400px] rounded-tl-none">
+            <CardHeader>
+              <CardTitle>Sign In</CardTitle>
+            </CardHeader>
 
-          <CardFooter className="flex-col items-start">
-            <p className="text-muted-foreground text-sm">
-              Don&apos;t have an account? Click{" "}
-              <Button variant="link" size="sm" className="px-0" asChild>
-                <Link href="/auth/signup">here</Link>
-              </Button>{" "}
-              to sign up.
-            </p>
+            <CardContent>
+              <SigninForm />
+            </CardContent>
 
-            {/* <p className="text-muted-foreground text-sm">
+            <CardFooter className="flex-col items-start">
+              <p className="text-muted-foreground text-sm">
+                Don&apos;t have an account? Click{" "}
+                <Button variant="link" size="sm" className="px-0" asChild>
+                  <Link href="/auth/signup">here</Link>
+                </Button>{" "}
+                to sign up.
+              </p>
+
+              {/* <p className="text-muted-foreground text-sm">
               Forgot your password? Click{" "}
               <Button variant="link" size="sm" className="px-0">
                 here
               </Button>
             </p> */}
-          </CardFooter>
-        </Card>
+            </CardFooter>
+          </Card>
+        </div>
       </div>
 
       <div className="bg-primary h-full w-full flex-1 hidden lg:block" />
