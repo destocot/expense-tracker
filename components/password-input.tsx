@@ -28,7 +28,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
           variant="ghost"
           size="icon"
           onClick={clickHandler}
-          className="absolute top-0 right-0"
+          className="absolute top-0 right-0 hover:bg-accent/50"
           tabIndex={-1}
         >
           {show ? <EyeOffIcon size={16} /> : <EyeIcon size={16} />}

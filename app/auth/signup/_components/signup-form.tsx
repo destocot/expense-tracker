@@ -56,8 +56,7 @@ export const SignupForm = ({ securityQuestions }: SignupFormProps) => {
       case 409:
       case 500:
       default:
-        const error = res.error || "Internal Server Error";
-        setError("securityAnswer", { message: error });
+        setError("securityAnswer", { message: res.error });
     }
   };
 

@@ -21,7 +21,7 @@ export default async function Page() {
     <main className="flex h-screen">
       <div className="flex-1 flex items-center justify-center">
         <div className="flex flex-col">
-          <Logo className="rounded-b-none" />
+          <Logo className="sm:rounded-b-none" />
 
           <Card className="w-[400px] rounded-tl-none border-0 sm:border">
             <CardHeader>

@@ -13,16 +13,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import type { ForgotPasswordInput } from "@/validators/forgot-password.validator";
-import {
-  ForgotPasswordSchema,
-  ForgotPasswordSchemaUsername,
-} from "@/validators/forgot-password.validator";
+import { ForgotPasswordSchema } from "@/validators/forgot-password.validator";
 import { valibotResolver } from "@hookform/resolvers/valibot";
+import { ArrowLeftSquareIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import * as v from "valibot";
 
 export const ForgotPasswordForm = () => {
+  const router = useRouter();
   const [isPending, setIsPending] = useState(false);
   const [securityQuestion, setSecurityQuestion] = useState<string>("");
   const [page, setPage] = useState<1 | 2 | 3>(1);
@@ -36,8 +35,36 @@ export const ForgotPasswordForm = () => {
 
   const submit = async (values: ForgotPasswordInput) => {
     const res = await forgotPasswordAction(values);
+    let flag = false;
 
-    // CONTINUE HERE EROR HANDLING
+    switch (res.status) {
+      case 200:
+        router.replace("/auth/signin");
+        break;
+      case 400:
+        const nestedErrors = res.error.nested;
+
+        for (const _field in nestedErrors) {
+          const field = _field as keyof ForgotPasswordInput;
+          const message = nestedErrors[field]?.[0];
+          setError(field, { message });
+
+          if (["securityQuestionId", "securityAnswer"].includes(field)) {
+            flag = true;
+          }
+        }
+        break;
+      case 404:
+        setError("securityAnswer", { message: res.error });
+        flag = true;
+        break;
+      case 409:
+      case 500:
+      default:
+        setError("confirmPassword", { message: res.error });
+    }
+
+    if (flag) setPage(2);
   };
 
   const handlePage1 = async () => {
@@ -53,6 +80,9 @@ export const ForgotPasswordForm = () => {
     } else {
       setValue("securityQuestionId", securityQuestion.data.questionId);
       setSecurityQuestion(securityQuestion.data.question);
+      setValue("securityAnswer", "");
+      setValue("password", "");
+      setValue("confirmPassword", "");
       setPage(2);
     }
 
@@ -61,6 +91,14 @@ export const ForgotPasswordForm = () => {
 
   const handlePage2 = () => {
     setPage(3);
+  };
+
+  const handleBack = () => {
+    setPage((page) => {
+      if (page === 3) return 2;
+      else if (page === 2) return 1;
+      return 1;
+    });
   };
 
   return (
@@ -114,7 +152,13 @@ export const ForgotPasswordForm = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} placeholder="Your Answer" />
+                      <Input
+                        {...field}
+                        placeholder="Your Answer"
+                        onKeyDown={(evt) => {
+                          if (evt.key === "Enter") setPage(3);
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -122,9 +166,14 @@ export const ForgotPasswordForm = () => {
               />
             </div>
 
-            <Button type="button" onClick={handlePage2} className="w-full">
-              Next
-            </Button>
+            <div className="flex gap-x-2">
+              <Button type="button" size="icon" onClick={handleBack}>
+                <ArrowLeftSquareIcon />
+              </Button>
+              <Button type="button" onClick={handlePage2} className="w-full">
+                Next
+              </Button>
+            </div>
           </>
         )}
 
@@ -160,13 +209,18 @@ export const ForgotPasswordForm = () => {
               />
             </div>
 
-            <Button
-              type="submit"
-              disabled={formState.isSubmitting}
-              className="w-full"
-            >
-              Submit
-            </Button>
+            <div className="flex gap-x-2">
+              <Button type="button" size="icon" onClick={handleBack}>
+                <ArrowLeftSquareIcon />
+              </Button>
+              <Button
+                type="submit"
+                disabled={formState.isSubmitting}
+                className="grow"
+              >
+                Submit
+              </Button>
+            </div>
           </>
         )}
       </form>
