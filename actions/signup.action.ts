@@ -56,7 +56,7 @@ async function CreateUser(output: SignupOutput) {
     data: {
       username: output.username,
       password: hashedPassword,
-      security_question: {
+      securityQuestion: {
         connect: {
           questionId: output.securityQuestionId,
         },

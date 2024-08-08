@@ -16,12 +16,13 @@ import type { ForgotPasswordInput } from "@/validators/forgot-password.validator
 import { ForgotPasswordSchema } from "@/validators/forgot-password.validator";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { ArrowLeftSquareIcon } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export const ForgotPasswordForm = () => {
-  const router = useRouter();
+  const [success, setSuccess] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [securityQuestion, setSecurityQuestion] = useState<string>("");
   const [page, setPage] = useState<1 | 2 | 3>(1);
@@ -39,7 +40,7 @@ export const ForgotPasswordForm = () => {
 
     switch (res.status) {
       case 200:
-        router.replace("/auth/signin");
+        setSuccess(true);
         break;
       case 400:
         const nestedErrors = res.error.nested;
@@ -100,6 +101,22 @@ export const ForgotPasswordForm = () => {
       return 1;
     });
   };
+
+  if (!success) {
+    return (
+      <div>
+        <p>Password has been successfully reset!</p>
+
+        <span>
+          Click{" "}
+          <Button className="py-0 h-fit" asChild>
+            <Link href="/auth/signin">here</Link>
+          </Button>{" "}
+          to sign in.
+        </span>
+      </div>
+    );
+  }
 
   return (
     <Form {...form}>

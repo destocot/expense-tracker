@@ -62,7 +62,7 @@ export const CreateExpenseForm = () => {
             control={control}
             name="description"
             render={({ field }) => (
-              <FormItem className="flex-[1]">
+              <FormItem className="flex-[2]">
                 <FormControl>
                   <Input type="text" placeholder="Description" {...field} />
                 </FormControl>

@@ -20,14 +20,14 @@ export const authConfig = {
     },
     async jwt({ token, user }) {
       if (user) {
-        token.userId = user.userId;
+        token.id = user.userId;
         token.username = user.username;
       }
 
       return token;
     },
     session({ session, token }) {
-      session.user.userId = token.userId;
+      session.user.id = token.id;
       session.user.username = token.username;
 
       return session;

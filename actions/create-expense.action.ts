@@ -3,12 +3,12 @@
 import * as v from "valibot";
 import { CreateExpenseSchema } from "@/validators/create-expense.validator";
 import prisma from "@/lib/db";
-import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
+import { findOneUserByAuthId } from "@/resources/auth.resource";
 
 type Res =
   | { error: v.FlatErrors<undefined>; status: 400 }
-  | { error: string; status: 401 | 500 }
+  | { error: string; status: 500 }
   | { error: null; status: 200 };
 
 export async function createExpenseAction(values: unknown): Promise<Res> {
@@ -21,19 +21,15 @@ export async function createExpenseAction(values: unknown): Promise<Res> {
 
   const output = parsedValues.output;
 
-  const session = await auth();
-
-  if (!session?.user?.userId) {
-    return { error: "Unauthorized", status: 401 };
-  }
-
   try {
+    const currentUser = await findOneUserByAuthId();
+
     await prisma.expense.create({
       data: {
         amount: output.amount,
         description: output.description,
         type: output.type,
-        userId: session.user.userId,
+        userId: currentUser.userId,
       },
     });
 

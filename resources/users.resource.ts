@@ -1,14 +1,14 @@
 import "server-only";
 
 import prisma from "@/lib/db";
-import { User, Prisma } from "@prisma/client";
+import type { User, Prisma } from "@prisma/client";
 
 type FindOneUserByUsernameOptions = {
   withSecurityQuestion?: boolean;
 };
 
 type UserWithSecurityQuestion = Prisma.UserGetPayload<{
-  include: { security_question: true };
+  include: { securityQuestion: true };
 }>;
 
 export function findOneUserByUsername(
@@ -29,7 +29,7 @@ export async function findOneUserByUsername(
   if (withSecurityQuestion) {
     return await prisma.user.findUnique({
       where: { username },
-      include: { security_question: true },
+      include: { securityQuestion: true },
     });
   }
 

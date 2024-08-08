@@ -15,7 +15,7 @@ model User {
   username String @unique
   password String
 
-  security_question  SecurityQuestion @relation(fields: [securityQuestionId], references: [questionId])
+  securityQuestion   SecurityQuestion @relation(fields: [securityQuestionId], references: [questionId])
   securityQuestionId String           @db.ObjectId
 
   securityAnswer String
