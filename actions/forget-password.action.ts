@@ -41,7 +41,7 @@ export async function forgotPasswordAction(values: unknown): Promise<Res> {
       where: {
         userId: existingUser.userId,
         securityAnswer: output.securityAnswer,
-        security_question: { questionId: output.securityQuestionId },
+        securityQuestion: { questionId: output.securityQuestionId },
       },
       data: { password: hashedPassword },
     });

@@ -19,11 +19,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { TYPES } from "@/lib/constants";
 import { capitalize } from "@/lib/utils";
 import { createExpenseAction } from "@/actions/create-expense.action";
-import { useRef } from "react";
 
 export const CreateExpenseForm = () => {
-  const radioGroupRef = useRef<HTMLDivElement>(null);
-
   const form = useForm<CreateExpenseInput>({
     resolver: valibotResolver(CreateExpenseSchema),
     defaultValues: { description: "", amount: "", type: TYPES[0] },
@@ -46,7 +43,6 @@ export const CreateExpenseForm = () => {
           setError(field, { message });
         }
         break;
-      case 401:
       case 500:
       default:
         const error = res.error || "Internal Server Error";

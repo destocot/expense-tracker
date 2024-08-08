@@ -23,12 +23,12 @@ export async function GET(
     withSecurityQuestion: true,
   });
 
-  if (!user?.security_question) {
+  if (!user?.securityQuestion) {
     return Response.json(
       { error: "Oops. Something went wrong" },
       { status: 404 }
     );
   } else {
-    return Response.json({ data: user.security_question });
+    return Response.json({ data: user.securityQuestion });
   }
 }
