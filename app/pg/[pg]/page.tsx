@@ -1,18 +1,21 @@
-import { SignoutButton } from "@/components/signout-button";
-import { CreateExpenseForm } from "./_components/create-expense-form";
+import { CreateExpenseForm } from "@/app/_components/create-expense-form";
+import { ExpenseList } from "@/app/_components/expense-list";
+import { Pagination } from "@/app/_components/pagination";
 import { Logo } from "@/components/logo";
-import { findAllExpensesByUserId } from "@/resources/expenses.resource";
-import { findOneUserByAuthId } from "@/resources/auth.resource";
+import { SignoutButton } from "@/components/signout-button";
 import { Button } from "@/components/ui/button";
+import { EXPENSES_PER_PAGE } from "@/lib/constants";
+import { parsePage } from "@/lib/utils";
+import { findOneUserByAuthId } from "@/resources/auth.resource";
+import { findAllExpensesByUserId } from "@/resources/expenses.resource";
 import { SiGithub, SiGithubHex } from "@icons-pack/react-simple-icons";
 import Link from "next/link";
-import { ExpenseList } from "./_components/expense-list";
-import { Pagination } from "./_components/pagination";
-import { EXPENSES_PER_PAGE } from "@/lib/constants";
 
-export default async function Page() {
+export default async function Page({ params }: { params: { pg: string } }) {
+  const page = parsePage(params.pg);
+
   const currUser = await findOneUserByAuthId();
-  const expenses = await findAllExpensesByUserId(currUser.userId);
+  const expenses = await findAllExpensesByUserId(currUser.userId, { page });
   const hasNext = expenses.length > EXPENSES_PER_PAGE;
 
   return (
@@ -45,7 +48,7 @@ export default async function Page() {
         <div className="relative">
           <CreateExpenseForm />
           <div className="absolute -bottom-2 right-0">
-            <Pagination hasNext={hasNext} currPage={1} />
+            <Pagination hasNext={hasNext} currPage={page} />
           </div>
         </div>
 

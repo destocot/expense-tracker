@@ -1,7 +1,6 @@
 import "server-only";
 
 import prisma from "@/lib/db";
-
 import type { User as AuthUser } from "next-auth";
 import { EXPENSES_PER_PAGE } from "@/lib/constants";
 
@@ -17,7 +16,7 @@ export async function findAllExpensesByUserId(
 
   return await prisma.expense.findMany({
     where: { userId },
-    take,
+    take: take + 1,
     skip: (page - 1) * take,
     orderBy: { createdAt: "desc" },
   });

@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { BadgePlusIcon, DollarSignIcon } from "lucide-react";
+import { DollarSignIcon, PlusIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,8 +19,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { TYPES } from "@/lib/constants";
 import { capitalize } from "@/lib/utils";
 import { createExpenseAction } from "@/actions/create-expense.action";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export const CreateExpenseForm = () => {
+  const router = useRouter();
+
   const form = useForm<CreateExpenseInput>({
     resolver: valibotResolver(CreateExpenseSchema),
     defaultValues: { description: "", amount: "", type: TYPES[0] },
@@ -33,6 +37,9 @@ export const CreateExpenseForm = () => {
     switch (res.status) {
       case 200:
         reset();
+        const type = capitalize(res.type.toLowerCase());
+        toast.success(`${type} successfully created!`);
+        router.push("/");
         break;
       case 400:
         const nestedErrors = res.error.nested;
@@ -52,8 +59,8 @@ export const CreateExpenseForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit(submit)} className="space-y-2 flex flex-col">
-        <div className="space-x-2 flex items-center">
+      <form onSubmit={handleSubmit(submit)} className="gap-y-2 flex flex-col">
+        <div className="gap-x-2 flex items-center">
           <FormField
             control={control}
             name="description"
@@ -90,7 +97,7 @@ export const CreateExpenseForm = () => {
           />
 
           <Button type="submit" size="icon" disabled={formState.isSubmitting}>
-            <BadgePlusIcon size={16} />
+            <PlusIcon size={18} />
           </Button>
         </div>
 

@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 type LogoProps = {
   className?: React.HTMLAttributes<HTMLHeadingElement>["className"];
@@ -6,13 +7,14 @@ type LogoProps = {
 
 export const Logo = ({ className }: LogoProps) => {
   return (
-    <h1
+    <Link
+      href="/"
       className={cn(
         "text-3xl font-bold tracking-tight px-1 bg-primary w-fit rounded",
         className
       )}
     >
       Expense Gumshoe
-    </h1>
+    </Link>
   );
 };
